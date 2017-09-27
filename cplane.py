@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Name:  & Chris Watkins
+# Name: Maksym Solodovskyi & Chris Watkins
 # Student ID:  & 1450263
 # Email:  & watki115@mail.chapman.edu
 # Course: CS510 Fall 2017
@@ -17,7 +17,7 @@ class ListComplexPlane(AbsComplexPlane):
         self.ymax  = ymax
         self.ylen  = ylen
         # The implementation type of plane is up to the user
-        #self.plane = [[for i in ]]
+        self.plane = []
         # fs should be a list of functions, initialized to be empty
         self.fs = []
 
@@ -29,15 +29,12 @@ class ListComplexPlane(AbsComplexPlane):
         y = self.ymin
         n= self.xlen
         m = self.ylen
-        for i in range (self.xmin, self.xmax+1):
-            x = i
-            i+=(self.xmax - self.xmin)/(n-1)
-            for j in range (self.ymin, self.ymax+1):
-                y = j
-                plane.append(x+y*1j)
-                j+= (self.ymax - self.ymin)/(m-1)
+        dx = (self.xmax - self.xmin)/(n-1)
+        dy = (self.ymax - self.ymin)/(m-1)
+        for i in range(n):
+            for j in range (m):
+                plane.append(x+i*dx+((y+j*dy)*1j))
         return plane
-        
         """Regenerate complex plane.
         Populate self.plane with new points (x + y*1j), using
         the stored attributes of xmax, xmin, xlen, ymax, ymin,
@@ -99,6 +96,6 @@ class ListComplexPlane(AbsComplexPlane):
         final output of the sequence of transformations collected in
         the list self.fs."""
         
-P = ListComplexPlane(1,5,6,1,5,6)
+P = ListComplexPlane(1,5,5,1,5,5)
 print(P.refresh())
 
