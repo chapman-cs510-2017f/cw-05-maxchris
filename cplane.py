@@ -23,8 +23,6 @@ class ListComplexPlane(AbsComplexPlane):
 
     def refresh(self):
         plane = []
-        planex = []
-        planey = []
         x = self.xmin
         y = self.ymin
         n= self.xlen
