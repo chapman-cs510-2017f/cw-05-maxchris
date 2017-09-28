@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 # Name: Maksym Solodovskyi & Chris Watkins
-# Student ID:  & 1450263
-# Email:  & watki115@mail.chapman.edu
+# Student ID: 2299101 & 1450263
+# Email:  solodovs@chapman.edu & watki115@mail.chapman.edu
 # Course: CS510 Fall 2017
 # Assignment: Classwork 5
 ###
@@ -23,6 +23,7 @@ class ListComplexPlane(AbsComplexPlane):
 
     def refresh(self):
         plane = []
+        self.fs = []
         x = self.xmin
         y = self.ymin
         n= self.xlen
@@ -30,8 +31,9 @@ class ListComplexPlane(AbsComplexPlane):
         dx = (self.xmax - self.xmin)/(n-1)
         dy = (self.ymax - self.ymin)/(m-1)
         for i in range(n):
-            for j in range (m):
+            for j in range(m):
                 plane.append(x+i*dx+((y+j*dy)*1j))
+        self.plane = plane
         return plane
         """Regenerate complex plane.
         Populate self.plane with new points (x + y*1j), using
@@ -41,31 +43,26 @@ class ListComplexPlane(AbsComplexPlane):
         are transforming the fresh plane.
         """
         
-
-       
-    
     def apply(self, f):
+        plane = self.plane
+        plane_x =[]
+        plane_y =[]
         self.f = f
-        self.fs.append(f)
-        newplane = []
-        newplanex = []
-        newplaney = []
-        shiftxmin = self.xmin + f[0]
-        shiftymin = self.ymin + f[1]
-        shiftxmax = self.xmax + f[0]
-        shiftymax = self.ymax + f[1]
-        n = self.xlen
-        m = self.ylen
-        for i in range (shiftxmin, shiftxmax):
-            
-            newplanex.append(i)
-            i+=(self.xmax - self.xmin)/(n-1)
-        for j in range (shiftymin, shiftymax):
-            newplaney.append(j)
-            j+= (self.ymax - self.ymin)/(m-1) 
-        newplane.append(newplanex)
-        newplane.append(newplaney)
-        return newplane
+        self.fs.append(self.f)
+        fs = self.fs
+        for i in range(len(plane)):
+            plane_x.append(plane[i].real)
+            plane_y.append(plane[i].imag)
+        plane_r =[plane_x, plane_y]
+        n = len(plane_r[0])
+        a = lambda x:x+1
+        for k in range(len(fs)):
+            for i in range(len(plane_r)):
+                for j in range(n):
+                    plane_r[i][j]= a(plane_r[i][j])
+        plane_r[1]= [plane_r[1][j]*1j for j in range(n)]
+        plane = [sum(x) for x in zip(plane_r[0],plane_r[1])]
+        return plane
         
         """Add the function f as the last element of self.fs. 
         Apply f to every point of the plane, so that the resulting
@@ -81,9 +78,9 @@ class ListComplexPlane(AbsComplexPlane):
         self.ymin  = ymin
         self.ymax  = ymax
         self.ylen  = ylen
-        
-        for i in range (0,len(f)):
-            plane.self.fs.apply(f(i))
+        fs = self.fs
+        for i in range(len(fs)):
+            plane.self.fs.apply(f[i])
         return plane
     
         """Reset self.xmin, self.xmax, and self.xlen.
@@ -93,7 +90,9 @@ class ListComplexPlane(AbsComplexPlane):
         the new points so that the resulting value of self.plane is the
         final output of the sequence of transformations collected in
         the list self.fs."""
-        
+
+    
 P = ListComplexPlane(1,5,5,1,5,5)
 print(P.refresh())
+print(P.apply(1))
 
