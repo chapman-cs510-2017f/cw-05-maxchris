@@ -55,11 +55,10 @@ class ListComplexPlane(AbsComplexPlane):
             plane_y.append(plane[i].imag)
         plane_r =[plane_x, plane_y]
         n = len(plane_r[0])
-        a = lambda x:x+1
         for k in range(len(fs)):
             for i in range(len(plane_r)):
                 for j in range(n):
-                    plane_r[i][j]= a(plane_r[i][j])
+                    plane_r[i][j]= f(plane_r[i][j])
         plane_r[1]= [plane_r[1][j]*1j for j in range(n)]
         plane = [sum(x) for x in zip(plane_r[0],plane_r[1])]
         return plane
@@ -72,15 +71,18 @@ class ListComplexPlane(AbsComplexPlane):
         
     
     def zoom(self,xmin,xmax,xlen,ymin,ymax,ylen):
+        plane = self.plane
+        fs = self.fs
         self.xmin  = xmin
         self.xmax  = xmax
         self.xlen  = xlen
         self.ymin  = ymin
         self.ymax  = ymax
         self.ylen  = ylen
-        fs = self.fs
+        self.refresh
         for i in range(len(fs)):
-            plane.self.fs.apply(f[i])
+            self.apply(self.fs[i])
+        self.plane = plane
         return plane
     
         """Reset self.xmin, self.xmax, and self.xlen.
@@ -93,6 +95,7 @@ class ListComplexPlane(AbsComplexPlane):
 
     
 P = ListComplexPlane(1,5,5,1,5,5)
-print(P.refresh())
-print(P.apply(1))
+P.refresh()
+P.apply(lambda x:x+2)
+#print(P.zoom(2,4,2,2,4,2))
 
