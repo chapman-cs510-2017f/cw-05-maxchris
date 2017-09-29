@@ -94,8 +94,9 @@ class ListComplexPlane(AbsComplexPlane):
         the list self.fs."""
 
     
-P = ListComplexPlane(1,5,5,1,5,5)
-P.refresh()
-P.apply(lambda x:x+2)
+#P = ListComplexPlane(1,5,5,1,5,5)
+P = ListComplexPlane(1,2,2,1,2,2)
+print(P.refresh())
+#P.apply(lambda x:x+2)
 #print(P.zoom(2,4,2,2,4,2))
 
