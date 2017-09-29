@@ -44,15 +44,14 @@ class ListComplexPlane(AbsComplexPlane):
         """
         
     def apply(self, f):
-        plane = self.plane
         plane_x =[]
         plane_y =[]
         self.f = f
         self.fs.append(self.f)
         fs = self.fs
-        for i in range(len(plane)):
-            plane_x.append(plane[i].real)
-            plane_y.append(plane[i].imag)
+        for i in range(len(self.plane)):
+            plane_x.append(self.plane[i].real)
+            plane_y.append(self.plane[i].imag)
         plane_r =[plane_x, plane_y]
         n = len(plane_r[0])
         for k in range(len(fs)):
@@ -60,8 +59,8 @@ class ListComplexPlane(AbsComplexPlane):
                 for j in range(n):
                     plane_r[i][j]= f(plane_r[i][j])
         plane_r[1]= [plane_r[1][j]*1j for j in range(n)]
-        plane = [sum(x) for x in zip(plane_r[0],plane_r[1])]
-        return plane
+        self.plane = [sum(x) for x in zip(plane_r[0],plane_r[1])]
+        return self.plane
         
         """Add the function f as the last element of self.fs. 
         Apply f to every point of the plane, so that the resulting
@@ -71,8 +70,6 @@ class ListComplexPlane(AbsComplexPlane):
         
     
     def zoom(self,xmin,xmax,xlen,ymin,ymax,ylen):
-        plane = self.plane
-        fs = self.fs
         self.xmin  = xmin
         self.xmax  = xmax
         self.xlen  = xlen
@@ -80,10 +77,9 @@ class ListComplexPlane(AbsComplexPlane):
         self.ymax  = ymax
         self.ylen  = ylen
         self.refresh
-        for i in range(len(fs)):
+        for i in range(len(self.fs)):
             self.apply(self.fs[i])
-        self.plane = plane
-        return plane
+        return self.plane
     
         """Reset self.xmin, self.xmax, and self.xlen.
         Also reset self.ymin, self.ymax, and self.ylen.
@@ -94,9 +90,9 @@ class ListComplexPlane(AbsComplexPlane):
         the list self.fs."""
 
     
-#P = ListComplexPlane(1,5,5,1,5,5)
-P = ListComplexPlane(1,2,2,1,2,2)
+P = ListComplexPlane(1,5,5,1,5,5)
+#P = ListComplexPlane(1,2,2,1,2,2)
 print(P.refresh())
-#P.apply(lambda x:x+2)
-#print(P.zoom(2,4,2,2,4,2))
+P.apply(lambda x:x+2)
+print(P.zoom(2,4,2,2,4,2))
 
