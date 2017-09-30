@@ -22,7 +22,7 @@ class ListComplexPlane(AbsComplexPlane):
         self.fs = []
 
     def refresh(self):
-        plane = []
+        self.plane = []
         self.fs = []
         x = self.xmin
         y = self.ymin
@@ -32,9 +32,8 @@ class ListComplexPlane(AbsComplexPlane):
         dy = (self.ymax - self.ymin)/(m-1)
         for i in range(n):
             for j in range(m):
-                plane.append(x+i*dx+((y+j*dy)*1j))
-        self.plane = plane
-        return plane
+                self.plane.append(x+i*dx+((y+j*dy)*1j))
+        return self.plane
         """Regenerate complex plane.
         Populate self.plane with new points (x + y*1j), using
         the stored attributes of xmax, xmin, xlen, ymax, ymin,
@@ -48,16 +47,14 @@ class ListComplexPlane(AbsComplexPlane):
         plane_y =[]
         self.f = f
         self.fs.append(self.f)
-        fs = self.fs
         for i in range(len(self.plane)):
             plane_x.append(self.plane[i].real)
             plane_y.append(self.plane[i].imag)
         plane_r =[plane_x, plane_y]
         n = len(plane_r[0])
-        for k in range(len(fs)):
-            for i in range(len(plane_r)):
-                for j in range(n):
-                    plane_r[i][j]= f(plane_r[i][j])
+        for i in range(len(plane_r)):
+            for j in range(n):
+                plane_r[i][j]= f(plane_r[i][j])
         plane_r[1]= [plane_r[1][j]*1j for j in range(n)]
         self.plane = [sum(x) for x in zip(plane_r[0],plane_r[1])]
         return self.plane
@@ -70,13 +67,22 @@ class ListComplexPlane(AbsComplexPlane):
         
     
     def zoom(self,xmin,xmax,xlen,ymin,ymax,ylen):
+        self.plane = []
         self.xmin  = xmin
         self.xmax  = xmax
         self.xlen  = xlen
         self.ymin  = ymin
         self.ymax  = ymax
         self.ylen  = ylen
-        self.refresh
+        x = self.xmin
+        y = self.ymin
+        n= self.xlen
+        m = self.ylen
+        dx = (self.xmax - self.xmin)/(n-1)
+        dy = (self.ymax - self.ymin)/(m-1)
+        for i in range(n):
+            for j in range(m):
+                self.plane.append(x+i*dx+((y+j*dy)*1j))
         for i in range(len(self.fs)):
             self.apply(self.fs[i])
         return self.plane
@@ -90,9 +96,8 @@ class ListComplexPlane(AbsComplexPlane):
         the list self.fs."""
 
     
-P = ListComplexPlane(1,5,5,1,5,5)
-#P = ListComplexPlane(1,2,2,1,2,2)
-print(P.refresh())
-P.apply(lambda x:x+2)
-print(P.zoom(2,4,2,2,4,2))
+P = ListComplexPlane(1,2,2,1,2,2)
+P.refresh()
+print(P.apply(lambda x:x+2))
+print(P.zoom(1,3,3,1,3,3))
 
