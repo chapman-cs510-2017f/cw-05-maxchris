@@ -20,6 +20,17 @@ class ListComplexPlane(AbsComplexPlane):
         self.plane = []
         # fs should be a list of functions, initialized to be empty
         self.fs = []
+    """   
+        Attributes:
+        xmax (float) : maximum horizontal axis value
+        xmin (float) : minimum horizontal axis value
+        xlen (int)   : number of horizontal points
+        ymax (float) : maximum vertical axis value
+        ymin (float) : minimum vertical axis value
+        ylen (int)   : number of vertical points
+        plane        : stored complex plane implementation
+        fs (list[function]) : function sequence to transform plane
+    """ 
 
     def refresh(self):
         self.plane = []
@@ -32,7 +43,7 @@ class ListComplexPlane(AbsComplexPlane):
         dy = (self.ymax - self.ymin)/(m-1)
         for i in range(n):
             for j in range(m):
-                self.plane.append(x+i*dx+((y+j*dy)*1j))
+                self.plane.append(x+i*dx+((y+j*dy)*1j)) #Builds complex plane
         return self.plane
         """Regenerate complex plane.
         Populate self.plane with new points (x + y*1j), using
@@ -40,6 +51,9 @@ class ListComplexPlane(AbsComplexPlane):
         and ylen to set plane dimensions and resolution. Reset
         the attribute fs to an empty list so that no functions 
         are transforming the fresh plane.
+
+        Returns:
+            Complex plane after generating points.
         """
         
     def apply(self, f):
@@ -47,22 +61,28 @@ class ListComplexPlane(AbsComplexPlane):
         plane_y =[]
         self.f = f
         self.fs.append(self.f)
-        for i in range(len(self.plane)):
+        for i in range(len(self.plane)): #Makes a list of the real and imaginary parts of points in the complex plane
             plane_x.append(self.plane[i].real)
             plane_y.append(self.plane[i].imag)
         plane_r =[plane_x, plane_y]
         n = len(plane_r[0])
         for i in range(len(plane_r)):
             for j in range(n):
-                plane_r[i][j]= f(plane_r[i][j])
-        plane_r[1]= [plane_r[1][j]*1j for j in range(n)]
-        self.plane = [sum(x) for x in zip(plane_r[0],plane_r[1])]
+                plane_r[i][j]= f(plane_r[i][j]) #Applies the function to the real and complex parts of points 
+        plane_r[1]= [plane_r[1][j]*1j for j in range(n)] 
+        self.plane = [sum(x) for x in zip(plane_r[0],plane_r[1])] #Puts the values together to get a complex number 
         return self.plane
         
         """Add the function f as the last element of self.fs. 
         Apply f to every point of the plane, so that the resulting
         value of self.plane is the final output of the sequence of
         transformations collected in the list self.fs.
+        
+        Args:
+            f(func): Function
+            
+        Returns:
+            Complex plane after applying the function.
         """
         
     
@@ -82,9 +102,9 @@ class ListComplexPlane(AbsComplexPlane):
         dy = (self.ymax - self.ymin)/(m-1)
         for i in range(n):
             for j in range(m):
-                self.plane.append(x+i*dx+((y+j*dy)*1j))
+                self.plane.append(x+i*dx+((y+j*dy)*1j)) #Builds complex plane from new attributes.
         for i in range(len(self.fs)):
-            self.apply(self.fs[i])
+            self.apply(self.fs[i]) #Applies all functions in order.
         return self.plane
     
         """Reset self.xmin, self.xmax, and self.xlen.
@@ -93,11 +113,20 @@ class ListComplexPlane(AbsComplexPlane):
         then apply all transformations in fs in the correct order to
         the new points so that the resulting value of self.plane is the
         final output of the sequence of transformations collected in
-        the list self.fs."""
+        the list self.fs.
+        
+        Args:
+            xmax(float) : maximum horizontal axis value
+            xmin(float) : minimum horizontal axis value
+            xlen(int)   : number of horizontal points
+            ymax(float) : maximum vertical axis value
+            ymin(float) : minimum vertical axis value
+            ylen(int)   : number of vertical points
+        
+        Returns:
+            Complex plane after reinitializing the attributes and applying the functions. 
+        """
 
     
-P = ListComplexPlane(1,2,2,1,2,2)
-P.refresh()
-print(P.apply(lambda x:x+2))
-print(P.zoom(1,3,3,1,3,3))
+
 
