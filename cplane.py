@@ -6,7 +6,7 @@
 # Course: CS510 Fall 2017
 # Assignment: Classwork 5
 ###
-
+    
 from abscplane import AbsComplexPlane
 class ListComplexPlane(AbsComplexPlane):
     def __init__(self, xmin, xmax, xlen, ymin, ymax, ylen):
@@ -42,8 +42,10 @@ class ListComplexPlane(AbsComplexPlane):
         dx = (self.xmax - self.xmin)/(n-1)
         dy = (self.ymax - self.ymin)/(m-1)
         for i in range(n):
+            points = []
             for j in range(m):
-                self.plane.append(x+i*dx+((y+j*dy)*1j)) #Builds complex plane
+                points.append(x+i*dx+((y+j*dy)*1j)) #Builds complex plane
+            self.plane.append(points)
         return self.plane
         """Regenerate complex plane.
         Populate self.plane with new points (x + y*1j), using
@@ -57,20 +59,12 @@ class ListComplexPlane(AbsComplexPlane):
         """
         
     def apply(self, f):
-        plane_x =[]
-        plane_y =[]
         self.f = f
         self.fs.append(self.f)
-        for i in range(len(self.plane)): #Makes a list of the real and imaginary parts of points in the complex plane
-            plane_x.append(self.plane[i].real)
-            plane_y.append(self.plane[i].imag)
-        plane_r =[plane_x, plane_y]
-        n = len(plane_r[0])
-        for i in range(len(plane_r)):
-            for j in range(n):
-                plane_r[i][j]= f(plane_r[i][j]) #Applies the function to the real and complex parts of points 
-        plane_r[1]= [plane_r[1][j]*1j for j in range(n)] 
-        self.plane = [sum(x) for x in zip(plane_r[0],plane_r[1])] #Puts the values together to get a complex number 
+        for i in range(len(self.plane)):
+            k = len(self.plane[i])
+            for j in range(k):
+                self.plane[i][j]= f(self.plane[i][j]) #Applies the function to the complex numbers
         return self.plane
         
         """Add the function f as the last element of self.fs. 
@@ -101,8 +95,10 @@ class ListComplexPlane(AbsComplexPlane):
         dx = (self.xmax - self.xmin)/(n-1)
         dy = (self.ymax - self.ymin)/(m-1)
         for i in range(n):
+            points = []
             for j in range(m):
-                self.plane.append(x+i*dx+((y+j*dy)*1j)) #Builds complex plane from new attributes.
+                points.append(x+i*dx+((y+j*dy)*1j)) #Builds complex plane from new attributes.
+            self.plane.append(points) 
         for i in range(len(self.fs)):
             self.apply(self.fs[i]) #Applies all functions in order.
         return self.plane
@@ -126,7 +122,5 @@ class ListComplexPlane(AbsComplexPlane):
         Returns:
             Complex plane after reinitializing the attributes and applying the functions. 
         """
-
-    
 
 
