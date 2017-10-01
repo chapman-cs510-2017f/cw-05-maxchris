@@ -44,7 +44,7 @@ class ListComplexPlane(AbsComplexPlane):
         for i in range(n):
             points = []
             for j in range(m):
-                points.append(x+i*dx+((y+j*dy)*1j)) #Builds complex plane
+                points.append(round(x+i*dx,2)+round((y+j*dy),2)*1j) #Builds complex plane
             self.plane.append(points)
         return self.plane
         """Regenerate complex plane.
@@ -97,7 +97,7 @@ class ListComplexPlane(AbsComplexPlane):
         for i in range(n):
             points = []
             for j in range(m):
-                points.append(x+i*dx+((y+j*dy)*1j)) #Builds complex plane from new attributes.
+                points.append(round(x+i*dx,2)+round((y+j*dy),2)*1j) #Builds complex plane from new attributes.
             self.plane.append(points) 
         for i in range(len(self.fs)):
             self.apply(self.fs[i]) #Applies all functions in order.
