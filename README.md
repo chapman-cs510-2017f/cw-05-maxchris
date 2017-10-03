@@ -21,10 +21,7 @@
 
 ## Assessment
 
-Analyze in this section what you found useful about this assignment in your own words. Include any lingering questions or comments that you may have.
-
-**CHANGEME**
-
+What we found the most useful was building the different functions in the cplane class. It gave us more experience in python coding, as well as experience with using classes. In addition, seeing how a class is organized and reading about the Google Style Guide was helpful.
 ## Honor Pledge
 
 I pledge that all the work in this repository is my own with only the following exceptions:
